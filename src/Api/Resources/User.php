@@ -8,8 +8,8 @@ class User extends \Illuminate\Http\Resources\Json\JsonResource
     {
         return [
             'id' => $this->id,
-            'login' => $this->login,
-            'is_confirmed' => $this->is_confirmed,
+            'name' => $this->name,
+            'email' => $this->email,
             'options' => $this->getOptions(),
         ];
     }

@@ -32,7 +32,7 @@ class UserController extends ApiController
     }
 
     /**
-     * Данные по авторизованному пользователю
+     * Authorized user data
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -41,17 +41,17 @@ class UserController extends ApiController
     }
 
     /**
-     * Регистрация пользователя
+     * User registration
      *
-     * @input string $login Логин
-     * @input string $options Дополнительные свойства пользователя
+     * @input string $name Name
+     * @input string $email Email
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function register(){
         $this->request->validate([
-            'login' => 'required|email|unique:users,login',
-            'options' => 'json'
+            'name' => 'required|string',
+            'email' => 'required|email|unique:users,login'
         ]);
 
         $user = $this->userService->register();
@@ -60,19 +60,20 @@ class UserController extends ApiController
     }
 
     /**
-     * Логин
+     * Login
      *
-     * @input string $login Логин
-     * @input string $password Пароль
-     * @input int ?$remember Помнить меня
+     * @input string $email Email
+     * @input string $password Password
+     * @input int ?$remember Remember me
      *
      * @return \Illuminate\Http\JsonResponse
      * @throws \Dskripchenko\LaravelApi\Components\ApiException
      */
     public function login(){
         $this->request->validate([
-            'login'    => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required|string',
+            'remember' => 'boolean',
         ]);
 
         if(!$this->userService->login()){
@@ -83,7 +84,7 @@ class UserController extends ApiController
     }
 
     /**
-     * Логаут
+     * Logout
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -93,16 +94,16 @@ class UserController extends ApiController
     }
 
     /**
-     * Восстановления пароля
+     * Password recovery
      *
-     * @input string $login Логин
+     * @input string $email Email
      *
      * @return \Illuminate\Http\JsonResponse
      * @throws \Dskripchenko\LaravelApi\Components\ApiException
      */
     public function passwordReset(){
         $this->request->validate([
-            'login' => 'required'
+            'email' => 'required'
         ]);
 
         if(!$this->userService->resetPassword()) {
@@ -113,19 +114,19 @@ class UserController extends ApiController
     }
 
     /**
-     * Установить пароль по токену из письма
+     * Set a password for a token from a letter
      *
-     * @input string $login Емайл
-     * @input string $token Токен
-     * @input string $password Новый пароль
-     * @input string $password_confirmation Повторение пароля
+     * @input string $email Email
+     * @input string $token Token
+     * @input string $password New Password
+     * @input string $password_confirmation Confirmation new password
      *
      * @return \Illuminate\Http\JsonResponse
      * @throws \Dskripchenko\LaravelApi\Components\ApiException
      */
     public function passwordSet() {
         $this->request->validate([
-            'login'    => 'required|email',
+            'email'    => 'required|email',
             'token'    => 'required',
             'password' => 'required|confirmed|min:6',
         ]);
@@ -138,11 +139,11 @@ class UserController extends ApiController
     }
 
     /**
-     * Изменить пароль
+     * Change Password
      *
-     * @input string $old_passwordтекущий пароль
-     * @input string $new_password новый пароль
-     * @input string $new_password_confirmation новый пароль еще раз
+     * @input string $old_password Current Password
+     * @input string $new_password New Password
+     * @input string $new_password_confirmation Confirmation new password
      */
     public function passwordChange() {
         $this->request->validate([

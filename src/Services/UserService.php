@@ -38,16 +38,16 @@ class UserService implements \Dskripchenko\LaravelApiUser\Interfaces\UserService
 
 
     public function username(){
-        return 'login';
+        return 'email';
     }
 
     /**
      * @return User
      */
     public function register() : User {
-        $login = $this->request->login;
-        $options = json_decode($this->request->options, true);
-        return $this->user->register($login, $options);
+        $email = $this->request->email;
+        $name = $this->request->name;
+        return $this->user->register($email, $name);
     }
 
     /**
@@ -72,7 +72,7 @@ class UserService implements \Dskripchenko\LaravelApiUser\Interfaces\UserService
         }
 
         $remember = $this->request->input('remember', 0) == 1;
-        if(!Auth::guard()->attempt($this->request->only('login', 'password'), $remember)) {
+        if(!Auth::guard()->attempt($this->request->only('email', 'password'), $remember)) {
             $this->incrementLoginAttempts($this->request);
             $this->lastError = ['login' => [trans('auth.failed')]];
             return false;
@@ -85,10 +85,10 @@ class UserService implements \Dskripchenko\LaravelApiUser\Interfaces\UserService
      * @return bool
      */
     public function resetPassword() : bool {
-        $login = $this->request->login;
-        $result = Password::sendResetLink($login);
+        $email = $this->request->email;
+        $result = Password::sendResetLink($email);
         if($result !== Password::RESET_LINK_SENT) {
-            $this->lastError = ['login' => trans($result)];
+            $this->lastError = ['email' => trans($result)];
             return false;
         }
         return true;
@@ -98,7 +98,7 @@ class UserService implements \Dskripchenko\LaravelApiUser\Interfaces\UserService
      * @return bool
      */
     public function passwordSet() : bool {
-        $credentials = $this->request->only('login', 'password', 'password_confirmation', 'token');
+        $credentials = $this->request->only('email', 'password', 'password_confirmation', 'token');
 
         $callback = function ($user, $password) {
             $user->password = Hash::make($password);

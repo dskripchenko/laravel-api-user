@@ -53,14 +53,14 @@ class User extends Model implements \Dskripchenko\LaravelApiUser\Interfaces\User
     }
 
     /**
-     * @param $login
-     * @param array $options
-     * @return $this|\Dskripchenko\LaravelApiUser\Interfaces\User
+     * @param $email
+     * @param $name
+     * @return \Dskripchenko\LaravelApiUser\Interfaces\User
      */
-    public function register($login, $options = []): \Dskripchenko\LaravelApiUser\Interfaces\User
+    public function register($email, $name): \Dskripchenko\LaravelApiUser\Interfaces\User
     {
-        $this->login = $login;
-        $this->setOptions($options);
+        $this->email = $email;
+        $this->name = $name;
         $this->save();
         return $this;
     }
