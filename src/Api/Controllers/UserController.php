@@ -51,7 +51,7 @@ class UserController extends ApiController
     public function register(){
         $this->request->validate([
             'name' => 'required|string',
-            'email' => 'required|email|unique:users,login'
+            'email' => 'required|email|unique:users,email'
         ]);
 
         $user = $this->userService->register();
