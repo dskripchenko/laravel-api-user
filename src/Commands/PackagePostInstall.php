@@ -20,9 +20,9 @@ class PackagePostInstall extends InstallMigrationsCommand
     protected function getMigrations(): array
     {
         return [
-            '001_create_user_table.php',
+            '001_create_users_table.php',
             '002_create_password_resets_table.php',
-            '003_add_options_to_user_table.php',
+            '003_add_options_to_users_table.php',
         ];
     }
 }
