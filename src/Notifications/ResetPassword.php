@@ -28,7 +28,6 @@ class ResetPassword extends \Illuminate\Auth\Notifications\ResetPassword
         $url = "{$appUrl}/{$path}/{$this->token}/{$notifiable->getEmailForPasswordReset()}";
 
         return (new MailMessage)
-            ->markdown('mail.notification')
             ->subject(trans('Password recovery'))
             ->line(trans('This email has been sent to you because we received a password reset request for your account'))
             ->action(trans('Change password'), $url)
