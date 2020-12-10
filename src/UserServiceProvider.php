@@ -13,6 +13,7 @@ class UserServiceProvider extends \Illuminate\Support\ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(dirname(__DIR__) . '/config/api.php', 'api');
+        $this->mergeConfigFrom(dirname(__DIR__) . '/config/auth.php', 'auth');
 
         $this->app->bind(UserService::class, \Dskripchenko\LaravelApiUser\Services\UserService::class);
         $this->app->bind(User::class, \Dskripchenko\LaravelApiUser\Models\User::class);
