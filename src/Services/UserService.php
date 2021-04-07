@@ -10,8 +10,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use \Dskripchenko\LaravelApiUser\Interfaces\UserService as UserServiceInterface;
 
-class UserService implements \Dskripchenko\LaravelApiUser\Interfaces\UserService
+/**
+ * Class UserService
+ * @package Dskripchenko\LaravelApiUser\Services
+ */
+class UserService implements UserServiceInterface
 {
     use ThrottlesLogins;
 
@@ -85,8 +90,7 @@ class UserService implements \Dskripchenko\LaravelApiUser\Interfaces\UserService
      * @return bool
      */
     public function resetPassword() : bool {
-        $email = $this->request->email;
-        $result = Password::sendResetLink($email);
+        $result = Password::sendResetLink($this->request->only('email'));
         if($result !== Password::RESET_LINK_SENT) {
             $this->lastError = ['email' => trans($result)];
             return false;
@@ -122,6 +126,9 @@ class UserService implements \Dskripchenko\LaravelApiUser\Interfaces\UserService
      * @return bool
      */
     public function passwordChange() : bool {
+        /**
+         * @var User $user
+         */
         $user = Auth::user();
         $user->password = Hash::make($this->request->new_password);
         $user->setRememberToken(Str::random(60));

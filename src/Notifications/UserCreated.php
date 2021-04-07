@@ -3,11 +3,13 @@
 namespace Dskripchenko\LaravelApiUser\Notifications;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\Lang;
 
+/**
+ * Class UserCreated
+ * @package Dskripchenko\LaravelApiUser\Notifications
+ */
 class UserCreated extends \Illuminate\Auth\Notifications\ResetPassword
 {
-
     /**
      * Build the mail representation of the notification.
      *

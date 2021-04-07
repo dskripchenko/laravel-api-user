@@ -1,5 +1,7 @@
 <?php
 
+use \Dskripchenko\LaravelApiUser\Models\User;
+
 return [
     'guards' => [
         'web' => [
@@ -11,7 +13,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => \Dskripchenko\LaravelApiUser\Models\User::class
+            'model' => User::class
         ],
     ],
 
@@ -21,6 +23,7 @@ return [
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
+            'connection' => env('DB_LAYER_CONNECTION', 'layer')
         ],
     ],
 

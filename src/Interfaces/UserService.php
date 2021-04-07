@@ -2,6 +2,10 @@
 
 namespace Dskripchenko\LaravelApiUser\Interfaces;
 
+/**
+ * Interface UserService
+ * @package Dskripchenko\LaravelApiUser\Interfaces
+ */
 interface UserService
 {
     /**

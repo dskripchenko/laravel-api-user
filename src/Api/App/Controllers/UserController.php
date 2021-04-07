@@ -1,13 +1,17 @@
 <?php
 
-namespace Dskripchenko\LaravelApiUser\Api\Controllers;
+namespace Dskripchenko\LaravelApiUser\Api\App\Controllers;
 
-use Dskripchenko\LaravelApi\Components\ApiController;
+use Dskripchenko\LaravelApi\Controllers\ApiController;
 use Dskripchenko\LaravelApiUser\Interfaces\UserService;
-use Dskripchenko\LaravelApiUser\Api\Resources\User as UserResource;
+use Dskripchenko\LaravelApiUser\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Class UserController
+ * @package Dskripchenko\LaravelApiUser\Api\App\Controllers
+ */
 class UserController extends ApiController
 {
     /**
@@ -49,9 +53,10 @@ class UserController extends ApiController
      * @return \Illuminate\Http\JsonResponse
      */
     public function register(){
+        $connectionName = config('database.layer');
         $this->request->validate([
             'name' => 'required|string',
-            'email' => 'required|email|unique:users,email'
+            'email' => "required|email|unique:{$connectionName}.users,email"
         ]);
 
         $user = $this->userService->register();
@@ -64,19 +69,20 @@ class UserController extends ApiController
      *
      * @input string $email Email
      * @input string $password Password
-     * @input int ?$remember Remember me
+     * @input integer ?$remember Remember me
      *
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Dskripchenko\LaravelApi\Components\ApiException
      */
-    public function login(){
-        $this->request->validate([
-            'email'    => 'required|email',
-            'password' => 'required|string',
-            'remember' => 'boolean',
-        ]);
+    public function login() {
+        $this->request->validate(
+            [
+                'email'    => 'required|string',
+                'password' => 'required|string',
+                'remember' => 'boolean',
+            ]
+        );
 
-        if(!$this->userService->login()){
+        if (!$this->userService->login()) {
             return $this->error($this->userService->getLastError());
         }
 
@@ -99,7 +105,6 @@ class UserController extends ApiController
      * @input string $email Email
      *
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Dskripchenko\LaravelApi\Components\ApiException
      */
     public function passwordReset(){
         $this->request->validate([
@@ -122,13 +127,12 @@ class UserController extends ApiController
      * @input string $password_confirmation Confirmation new password
      *
      * @return \Illuminate\Http\JsonResponse
-     * @throws \Dskripchenko\LaravelApi\Components\ApiException
      */
     public function passwordSet() {
         $this->request->validate([
             'email'    => 'required|email',
             'token'    => 'required',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|confirmed|min:8',
         ]);
 
         if(!$this->userService->passwordSet()) {
@@ -148,7 +152,7 @@ class UserController extends ApiController
     public function passwordChange() {
         $this->request->validate([
             'old_password' => 'password',
-            'new_password'     => 'required|confirmed|min:8',
+            'new_password' => 'required|confirmed|min:8',
         ]);
 
         $this->userService->passwordChange();

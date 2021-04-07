@@ -1,9 +1,8 @@
 {
     "name": "dskripchenko/laravel-api-user",
-    "description": "Base api methods. User registration, login, logout, profile",
+    "description": "Base api methods. User registration, login, logout, profile. User roles.",
     "type": "library",
     "license": "MIT",
-    "version": "0.0.1",
     "authors": [
         {
             "name": "Denis Skripchenko",
@@ -12,18 +11,21 @@
     ],
     "minimum-stability": "dev",
     "require": {
-        "dskripchenko/laravel-api": "@dev",
-        "dskripchenko/laravel-components-migration-installer": "@dev"
+        "dskripchenko/laravel-api": "^2.0.0",
+        "dskripchenko/laravel-schemify": "^2.0.0"
     },
     "autoload": {
         "psr-4": {
             "Dskripchenko\\LaravelApiUser\\": ["src/"]
-        }
+        },
+        "files": [
+            "src/functions.php"
+        ]
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Dskripchenko\\LaravelApiUser\\UserServiceProvider"
+                "Dskripchenko\\LaravelApiUser\\Providers\\UserServiceProvider"
             ]
         }
     }

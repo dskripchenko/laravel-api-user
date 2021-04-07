@@ -3,8 +3,11 @@
 namespace Dskripchenko\LaravelApiUser\Notifications;
 
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\Facades\Lang;
 
+/**
+ * Class ResetPassword
+ * @package Dskripchenko\LaravelApiUser\Notifications
+ */
 class ResetPassword extends \Illuminate\Auth\Notifications\ResetPassword
 {
     /**
